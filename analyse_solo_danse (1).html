@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Danse — Analyse de mon solo</title>
+<style>
+:root{--bg:#f4f6fa;--panel:#fff;--ink:#172033;--muted:#647087;--line:#dce2ec;--blue:#2855d9;--blue2:#e9efff;--red:#b42318;--redbg:#fff0ee;--green:#147d52;--greenbg:#e9f8f0;--gold:#936300;--goldbg:#fff6dc;--radius:16px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:#14213d;color:white;padding:22px max(18px,calc((100vw - 1300px)/2));}
+header h1{margin:0 0 5px;font-size:clamp(1.35rem,3vw,2rem)}header p{margin:0;color:#d7def0;max-width:850px}
+main{max-width:1300px;margin:20px auto;padding:0 16px 40px}.privacy{border:1px solid #b8d9c8;background:#edf9f2;color:#174c34;padding:12px 15px;border-radius:12px;margin-bottom:16px}
+.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.85fr);gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:0 3px 14px #17203308;margin-bottom:16px}
+h2{font-size:1.12rem;margin:0 0 12px}h3{font-size:1rem;margin:15px 0 8px}
+label{display:block;font-weight:650;font-size:.9rem;margin:10px 0 5px}input,select,textarea,button{font:inherit}input[type=text],input[type=number],select,textarea{width:100%;border:1px solid #cbd3e1;border-radius:10px;padding:10px 11px;background:#fff;color:var(--ink)}textarea{min-height:76px;resize:vertical}input:focus,select:focus,textarea:focus,button:focus-visible{outline:3px solid #9cb5ff;outline-offset:1px}
+button,.filebutton{border:0;border-radius:10px;padding:10px 13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary{background:var(--blue);color:#fff}.secondary{background:#edf0f6;color:#25304a}.danger{background:var(--redbg);color:var(--red)}.small{font-size:.88rem;padding:7px 10px}.buttonrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.muted{color:var(--muted);font-size:.9rem}.video-wrap{background:#0c1220;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:220px}
+video{display:block;width:100%;max-height:62vh;background:#0c1220}#videoPlaceholder{color:#dbe3f5;text-align:center;padding:36px 16px}
+.filepick{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.filepick input{max-width:100%}.status{font-size:.85rem;color:var(--muted);margin-top:7px}
+.timeline{position:relative;height:38px;margin:15px 0 5px;background:#edf0f6;border-radius:9px;overflow:hidden;cursor:pointer;border:1px solid #d8dfeb}
+#progress{position:absolute;left:0;top:0;height:100%;width:0;background:#c9d7ff}
+.markerpin{position:absolute;top:0;bottom:0;width:4px;border-radius:3px;transform:translateX(-50%);z-index:2;cursor:pointer;border:0;padding:0;min-width:4px}
+.markerpin.route{background:#d92d20}.markerpin.intent{background:#16865a}.markerpin.note{background:#a56b00}
+.timecontrols{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}.timecontrols input{min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.84rem;color:var(--muted);margin:8px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.cardlist{display:flex;flex-direction:column;gap:9px}.event{border:1px solid var(--line);border-left:5px solid #a56b00;border-radius:12px;padding:11px;background:white}.event.route{border-left-color:#d92d20}.event.intent{border-left-color:#16865a}.eventtop{display:flex;justify-content:space-between;align-items:start;gap:8px}.eventtitle{font-weight:750}.timestamp{font-variant-numeric:tabular-nums;color:var(--blue);font-weight:750;white-space:nowrap}.event p{margin:6px 0;font-size:.92rem;white-space:pre-wrap}.eventactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.pill{display:inline-block;border-radius:999px;padding:3px 8px;font-size:.76rem;font-weight:700;background:#edf0f6;color:#35405a}.pill.route{background:var(--redbg);color:var(--red)}.pill.intent{background:var(--greenbg);color:var(--green)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{background:#f4f6fa;border-radius:12px;padding:12px}.metric strong{display:block;font-size:1.45rem}.metric span{font-size:.78rem;color:var(--muted)}
+.checkrow{display:flex;align-items:flex-start;gap:9px;margin:9px 0}.checkrow input{margin-top:5px;transform:scale(1.15)}.checkrow label{font-weight:500;margin:0}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}.empty{padding:18px;border:1px dashed #c7cfdd;border-radius:12px;color:var(--muted);text-align:center}
+.print-report-heading{display:none}\nfooter{color:var(--muted);font-size:.84rem;padding:0 2px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.video-wrap{min-height:180px}.two{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}}
+@media print{.print-report-heading{display:block!important;margin:0 0 18px;padding:0 0 12px;border-bottom:2px solid #222}.print-report-heading h1{font-size:22pt;margin:0 0 6px}.print-report-heading p{margin:4px 0;color:#333}header{display:none!important;background:white;color:black;padding:10px 0;border-bottom:2px solid #222}header p{color:#333}body{background:white}.layout{display:block}.panel{box-shadow:none;break-inside:avoid;border:1px solid #bbb}.video-panel,.editor-panel,.no-print,.privacy{display:none!important}main{max-width:none;margin:0;padding:0}.event{break-inside:avoid}.eventactions{display:none}footer{margin-top:15px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Danse — Analyse de mon solo</h1>
+  <p>Observer précisément sa prestation, repérer les sorties de route, clarifier son intention artistique et préparer une transformation.</p>
+</header>
+<main>
+  <section class="print-report-heading"><h1 id="printReportTitle">Rapport d’analyse du solo de danse</h1><p id="printReportSubtitle"></p><p id="printReportDate"></p></section>
+  <div class="privacy"><strong>Confidentialité :</strong> la vidéo est lue directement sur cet appareil. Elle n'est pas envoyée à un serveur. Les analyses restent dans ce navigateur jusqu'à leur suppression ou leur export. Sur un appareil partagé, exporte ton travail puis efface les données locales.</div>
+  <section class="panel no-print">
+    <h2>Mon travail</h2>
+    <div class="two">
+      <div><label for="student">Prénom ou pseudonyme (apparaîtra dans le titre du PDF)</label><input id="student" type="text" placeholder="Ex. Élève 07"></div>
+      <div><label for="soloTitle">Titre / nom de mon solo</label><input id="soloTitle" type="text" placeholder="Ex. Entre deux mondes"></div>
+    </div>
+    <label for="videoFile">Choisir la vidéo de mon solo</label>
+    <div class="filepick"><input id="videoFile" type="file" accept="video/*"><span class="muted">MP4, MOV ou autre format pris en charge par le navigateur.</span></div>
+    <div id="videoStatus" class="status">Aucune vidéo chargée. La vidéo n'est pas sauvegardée dans l'application.</div>
+  </section>
+
+  <div class="layout">
+    <div>
+      <section class="panel video-panel">
+        <h2>1. Observer la vidéo</h2>
+        <div class="video-wrap">
+          <video id="video" controls playsinline preload="metadata" hidden></video>
+          <div id="videoPlaceholder"><strong>Ta vidéo apparaîtra ici</strong><br><span class="muted">Charge un fichier depuis la zone « Mon travail ».</span></div>
+        </div>
+        <div class="timecontrols" style="margin-top:12px">
+          <input id="seek" type="range" min="0" max="100" value="0" aria-label="Naviguer dans la vidéo">
+          <button id="back5" class="secondary small" type="button">−5 s</button>
+          <button id="forward5" class="secondary small" type="button">+5 s</button>
+        </div>
+        <div class="three">
+          <div><label for="jumpTime">Aller à (secondes)</label><input id="jumpTime" type="number" min="0" step=".1" placeholder="24.5"></div>
+          <div><label for="playRate">Vitesse</label><select id="playRate"><option value="0.5">0,5×</option><option value="0.75">0,75×</option><option value="1" selected>1× normal</option><option value="1.25">1,25×</option><option value="1.5">1,5×</option></select></div>
+          <div style="display:flex;align-items:end"><button id="goTime" class="secondary" type="button" style="width:100%">Aller</button></div>
+        </div>
+        <div class="timeline" id="timeline" role="slider" tabindex="0" aria-label="Chronologie et balises" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="progress"></div></div>
+        <div class="legend"><span><i class="dot" style="background:#d92d20"></i>Sortie de route</span><span><i class="dot" style="background:#16865a"></i>Intention artistique</span><span><i class="dot" style="background:#a56b00"></i>Observation libre</span></div>
+        <div class="buttonrow">
+          <button id="addRouteNow" class="danger" type="button">＋ Sortie de route ici</button>
+          <button id="addIntentNow" class="primary" type="button">＋ Intention ici</button>
+          <button id="addNoteNow" class="secondary" type="button">＋ Observation libre</button>
+        </div>
+        <p class="muted">Astuce : mets la vidéo en pause au moment choisi, puis ajoute une balise. Clique sur un repère de la chronologie ou sur « Revoir » pour retrouver ce passage.</p>
+      </section>
+
+      <section class="panel">
+        <h2>2. Mes balises <span id="markerCount" class="pill">0</span></h2>
+        <div class="two no-print">
+          <div><label for="filterType">Filtrer par type</label><select id="filterType"><option value="all">Toutes les balises</option><option value="route">Sorties de route</option><option value="intent">Intentions artistiques</option><option value="note">Observations libres</option></select></div>
+          <div><label for="sortOrder">Ordre</label><select id="sortOrder"><option value="time">Chronologique</option><option value="newest">Plus récentes d'abord</option></select></div>
+        </div>
+        <div id="events" class="cardlist" style="margin-top:12px"><div class="empty">Aucune balise pour le moment. Visionne ton solo et ajoute un premier repère.</div></div>
+      </section>
+    </div>
+
+    <div>
+      <section class="panel editor-panel" id="editorPanel">
+        <h2>3. Créer / modifier une balise</h2>
+        <p class="muted">Le formulaire se remplit à l'instant courant. Les champs non pertinents peuvent rester vides.</p>
+        <form id="markerForm">
+          <input id="editId" type="hidden">
+          <div class="two">
+            <div><label for="markerTime">Instant (secondes) *</label><input id="markerTime" type="number" min="0" step=".1" required placeholder="24.5"></div>
+            <div><label for="markerEnd">Fin (facultatif, secondes)</label><input id="markerEnd" type="number" min="0" step=".1" placeholder="Pour un événement prolongé"></div>
+          </div>
+          <label for="markerType">Type de balise *</label>
+          <select id="markerType" required>
+            <option value="route">Sortie de route</option><option value="intent">Intention artistique</option><option value="note">Observation libre</option>
+          </select>
+          <div id="routeFields">
+            <label for="routeCategory">Nature de la sortie de route</label>
+            <select id="routeCategory">
+              <option>Geste parasite</option><option>Déséquilibre non intentionnel</option><option>Arrêt non prévu</option><option>Oubli / hésitation</option><option>Parole ou chant non prévu</option><option>Orientation peu lisible</option><option>Rupture de rythme non prévue</option><option>Perte de concentration visible</option><option>Autre</option>
+            </select>
+            <label for="routeIntentional">Cet événement était-il intentionnel ?</label>
+            <select id="routeIntentional"><option value="non">Non, c'est une sortie de route</option><option value="oui">Oui, c'est un choix artistique</option><option value="incertain">Je ne sais pas encore</option></select>
+          </div>
+          <div id="intentFields" hidden>
+            <label for="intention">Mon intention à ce moment précis (réponse courte libre)</label>
+            <textarea id="intention" maxlength="500" placeholder="Ex. Faire sentir une lutte intérieure, comme si le corps résistait à une force invisible…"></textarea>
+            <label for="means">Quels choix corporels soutiennent cette intention ? (facultatif)</label>
+            <input id="means" type="text" maxlength="300" placeholder="Ex. mouvements saccadés, regard fuyant, poids vers l'arrière">
+            <label for="clarity">Mon intention est-elle lisible dans la vidéo ?</label>
+            <select id="clarity"><option value="">Je ne sais pas encore</option><option>Oui, elle me semble lisible</option><option>Partiellement</option><option>Pas encore</option></select>
+          </div>
+          <label for="observation">Ce que j'observe concrètement</label>
+          <textarea id="observation" maxlength="1000" placeholder="Décrire ce qui se passe, sans jugement vague."></textarea>
+          <label for="impact">Effet sur la continuité / lisibilité du solo (facultatif)</label>
+          <input id="impact" type="text" maxlength="300" placeholder="Ex. détourne l'attention, coupe l'élan, renforce le contraste…">
+          <label for="nextStep">Piste de transformation / essai à faire (facultatif)</label>
+          <textarea id="nextStep" maxlength="600" placeholder="Ex. répéter la transition en ralentissant, fixer une direction du regard…"></textarea>
+          <div class="buttonrow">
+            <button class="primary" type="submit" id="saveMarker">Enregistrer la balise</button>
+            <button class="secondary" type="button" id="clearForm">Nouvelle balise</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>4. Bilan de mon analyse</h2>
+        <div class="metrics">
+          <div class="metric"><strong id="countRoute">0</strong><span>Sorties de route</span></div>
+          <div class="metric"><strong id="countIntent">0</strong><span>Intentions repérées</span></div>
+          <div class="metric"><strong id="rateRoute">—</strong><span>Sorties / minute</span></div>
+        </div>
+        <label for="mainIntent">Mon intention générale pour le solo</label>
+        <textarea id="mainIntent" maxlength="1000" placeholder="Qu'est-ce que je veux faire comprendre, suggérer ou faire éprouver au spectateur ?"></textarea>
+        <label for="strengths">Ce qui fonctionne déjà</label>
+        <textarea id="strengths" maxlength="1000" placeholder="Quels moments sont maîtrisés ? Quels choix corporels sont efficaces ?"></textarea>
+        <label for="priorities">Mes deux ou trois priorités de travail</label>
+        <textarea id="priorities" maxlength="1200" placeholder="1. …&#10;2. …&#10;3. …"></textarea>
+        <label for="testPlan">Ce que je vais tester dans la prochaine version</label>
+        <textarea id="testPlan" maxlength="1000" placeholder="Une modification concrète, observable et réalisable."></textarea>
+        <div class="buttonrow no-print">
+          <button id="saveSummary" class="primary" type="button">Enregistrer le bilan</button>
+        </div>
+        <p id="summaryStatus" class="status">Le bilan est conservé dans ce navigateur quand tu l'enregistres.</p>
+      </section>
+
+      <section class="panel no-print">
+        <h2>5. Exporter mon rapport</h2>
+        <p class="muted">Le rapport PDF rassemble les balises et le bilan personnel. La vidéo n'est pas intégrée au document.</p>
+        <div class="buttonrow">
+          <button id="printReport" class="primary" type="button">Imprimer / enregistrer en PDF</button>
+          <button id="clearAll" class="danger" type="button">Effacer les données locales</button>
+        </div>
+        <p class="muted">Dans la fenêtre d'impression, choisis « Enregistrer au format PDF ». Le prénom ou pseudonyme et le titre du solo seront repris dans le titre proposé au document.</p>
+      </section>
+    </div>
+  </div>
+  <footer>Outil pédagogique d'auto-observation — les indicateurs chiffrés décrivent les balises saisies, pas la valeur artistique du solo. Les choix intentionnels (immobilité, déséquilibre contrôlé, orientation, rupture) ne sont pas automatiquement des erreurs.</footer>
+</main>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const video = $('video');
+let videoUrl = null;
+let markers = [];
+let nextId = 1;
+const STORAGE_KEY = 'danseSoloAnalysis_v1';
+let meta = {student:'',soloTitle:'',mainIntent:'',strengths:'',priorities:'',testPlan:''};
+const typeNames = {route:'Sortie de route',intent:'Intention artistique',note:'Observation libre'};
+const routeColors = {route:'#d92d20',intent:'#16865a',note:'#a56b00'};
+function currentTime(){ return Number.isFinite(video.currentTime) ? video.currentTime : (Number($('markerTime').value)||0); }
+function fmt(t){ if(!Number.isFinite(t)||t<0)return '00:00'; const m=Math.floor(t/60),s=Math.floor(t%60),d=Math.floor((t%1)*10); return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+(d?'.'+d:'');}
+function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function persist(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify({version:1,markers,nextId,meta,updated:new Date().toISOString()}));}catch(e){} }
+function restore(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(d&&d.version===1){markers=Array.isArray(d.markers)?d.markers:[];nextId=d.nextId||1;meta={...meta,...(d.meta||{})};fillMeta();}}catch(e){} render();}
+function fillMeta(){ $('student').value=meta.student||'';$('soloTitle').value=meta.soloTitle||'';['mainIntent','strengths','priorities','testPlan'].forEach(k=>$(k).value=meta[k]||'');}
+function readMeta(){meta.student=$('student').value;meta.soloTitle=$('soloTitle').value;['mainIntent','strengths','priorities','testPlan'].forEach(k=>meta[k]=$(k).value);}
+function duration(){return Number.isFinite(video.duration)?video.duration:0;}
+function goTo(t){if(!duration()){$('markerTime').value=Math.max(0,Number(t)||0).toFixed(1);return;}video.currentTime=Math.min(duration(),Math.max(0,Number(t)||0));$('jumpTime').value=video.currentTime.toFixed(1);$('markerTime').value=video.currentTime.toFixed(1);}
+function updateProgress(){const dur=duration(),t=video.currentTime||0;$('seek').value=dur?t/dur*100:0;$('progress').style.width=(dur?t/dur*100:0)+'%';$('timeline').setAttribute('aria-valuenow',dur?Math.round(t/dur*100):0);$('jumpTime').value=t.toFixed(1);if(!$('editId').value)$('markerTime').value=t.toFixed(1);renderPins();}
+function renderPins(){const tl=$('timeline');tl.querySelectorAll('.markerpin').forEach(n=>n.remove());const dur=duration();if(!dur)return;markers.forEach(m=>{const b=document.createElement('button');b.type='button';b.className='markerpin '+m.type;b.style.left=(Math.max(0,Math.min(100,m.time/dur*100)))+'%';b.title=fmt(m.time)+' — '+(m.category||typeNames[m.type]);b.setAttribute('aria-label','Revoir '+b.title);b.addEventListener('click',e=>{e.stopPropagation();goTo(m.time);loadMarker(m.id);});tl.appendChild(b);});}
+function formBlank(){ $('editId').value='';$('markerTime').value=duration()?currentTime().toFixed(1):'0';$('markerEnd').value='';$('markerType').value='route';$('routeCategory').selectedIndex=0;$('routeIntentional').value='non';$('intention').value='';$('means').value='';$('clarity').value='';$('observation').value='';$('impact').value='';$('nextStep').value='';$('saveMarker').textContent='Enregistrer la balise';toggleFields();}
+function toggleFields(){const t=$('markerType').value;$('routeFields').hidden=t!=='route';$('intentFields').hidden=t!=='intent';}
+function loadMarker(id){const m=markers.find(x=>x.id===id);if(!m)return;$('editId').value=m.id;$('markerTime').value=m.time;$('markerEnd').value=m.end??'';$('markerType').value=m.type;$('routeCategory').value=m.category||'Geste parasite';$('routeIntentional').value=m.intentional||'non';$('intention').value=m.intention||'';$('means').value=m.means||'';$('clarity').value=m.clarity||'';$('observation').value=m.observation||'';$('impact').value=m.impact||'';$('nextStep').value=m.nextStep||'';$('saveMarker').textContent='Mettre à jour la balise';toggleFields();$('editorPanel').scrollIntoView({behavior:'smooth',block:'start'});}
+function createAt(type){formBlank();$('markerType').value=type;$('markerTime').value=currentTime().toFixed(1);toggleFields();if(type==='intent')$('intention').focus();else $('routeCategory').focus();$('editorPanel').scrollIntoView({behavior:'smooth',block:'start'});}
+function render(){const filter=$('filterType').value,sort=$('sortOrder').value;let list=markers.filter(m=>filter==='all'||m.type===filter);list.sort((a,b)=>sort==='newest'?b.id-a.id:a.time-b.time);$('markerCount').textContent=markers.length;$('countRoute').textContent=markers.filter(m=>m.type==='route'&&m.intentional!=='oui').length;$('countIntent').textContent=markers.filter(m=>m.type==='intent').length;const mins=duration()/60;$('rateRoute').textContent=mins>0?(markers.filter(m=>m.type==='route'&&m.intentional!=='oui').length/mins).toFixed(1):'—';
+const box=$('events');box.innerHTML='';if(!list.length){box.innerHTML='<div class="empty">Aucune balise dans cette catégorie. Ajoute un repère pendant le visionnage.</div>';renderPins();return;}
+list.forEach(m=>{const el=document.createElement('article');el.className='event '+m.type;let title=m.type==='route'?(m.category||'Sortie de route'):m.type==='intent'?'Intention : '+(m.intention||'à préciser'):'Observation libre';let details=[];if(m.type==='route'&&m.intentional)details.push('Intentionnalité : '+({oui:'choix artistique',non:'non intentionnel',incertain:'à clarifier'}[m.intentional]||m.intentional));if(m.means)details.push('Moyens corporels : '+m.means);if(m.clarity)details.push('Lisibilité : '+m.clarity);if(m.observation)details.push(m.observation);if(m.impact)details.push('Effet : '+m.impact);if(m.nextStep)details.push('À tester : '+m.nextStep);
+el.innerHTML='<div class="eventtop"><div><span class="pill '+m.type+'">'+safe(typeNames[m.type])+'</span><div class="eventtitle" style="margin-top:6px">'+safe(title)+'</div></div><span class="timestamp">'+fmt(m.time)+(m.end!=null&&m.end!==''?' – '+fmt(Number(m.end)):'')+'</span></div>'+(details.length?details.map(x=>'<p>'+safe(x)+'</p>').join(''):'<p class="muted">Pas de commentaire ajouté.</p>')+'<div class="eventactions no-print"><button class="secondary small" data-action="review" data-id="'+m.id+'">▶ Revoir</button><button class="secondary small" data-action="edit" data-id="'+m.id+'">Modifier</button><button class="danger small" data-action="delete" data-id="'+m.id+'">Supprimer</button></div>';box.appendChild(el);});
+renderPins();}
+$('videoFile').addEventListener('change',e=>{const file=e.target.files?.[0];if(!file)return;if(videoUrl)URL.revokeObjectURL(videoUrl);videoUrl=URL.createObjectURL(file);video.src=videoUrl;video.hidden=false;$('videoPlaceholder').hidden=true;$('videoStatus').textContent='Vidéo chargée localement : '+file.name+' ('+(file.size/1024/1024).toFixed(1)+' Mo). Le fichier n’est pas envoyé ni sauvegardé.';video.load();});
+video.addEventListener('loadedmetadata',()=>{ $('seek').max=100;updateProgress();render();});
+video.addEventListener('timeupdate',updateProgress);video.addEventListener('durationchange',()=>{updateProgress();render();});
+$('seek').addEventListener('input',()=>{if(duration())video.currentTime=Number($('seek').value)/100*duration();});
+$('back5').onclick=()=>goTo(currentTime()-5);$('forward5').onclick=()=>goTo(currentTime()+5);$('goTime').onclick=()=>goTo(Number($('jumpTime').value)||0);$('playRate').onchange=()=>video.playbackRate=Number($('playRate').value);
+$('timeline').addEventListener('click',e=>{if(!duration())return;const r=e.currentTarget.getBoundingClientRect();goTo((e.clientX-r.left)/r.width*duration());});
+$('timeline').addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){e.preventDefault();goTo(currentTime()-1)}if(e.key==='ArrowRight'){e.preventDefault();goTo(currentTime()+1)}});
+$('addRouteNow').onclick=()=>createAt('route');$('addIntentNow').onclick=()=>createAt('intent');$('addNoteNow').onclick=()=>createAt('note');$('markerType').onchange=toggleFields;$('clearForm').onclick=formBlank;
+$('markerForm').addEventListener('submit',e=>{e.preventDefault();const time=Number($('markerTime').value),end=$('markerEnd').value===''?null:Number($('markerEnd').value);if(!Number.isFinite(time)||time<0){alert('Indique un instant valide.');return;}if(end!==null&&end<time){alert('La fin doit être après le début.');return;}const type=$('markerType').value;const m={id:$('editId').value?Number($('editId').value):nextId++,time,end,type,category:type==='route'?$('routeCategory').value:'',intentional:type==='route'?$('routeIntentional').value:'',intention:type==='intent'?$('intention').value.trim():'',means:type==='intent'? $('means').value.trim():'',clarity:type==='intent'?$('clarity').value:'',observation:$('observation').value.trim(),impact:$('impact').value.trim(),nextStep:$('nextStep').value.trim()};const idx=markers.findIndex(x=>x.id===m.id);if(idx>=0)markers[idx]=m;else markers.push(m);readMeta();persist();render();formBlank();$('summaryStatus').textContent='Balise enregistrée dans ce navigateur.';});
+$('events').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b)return;const id=Number(b.dataset.id),m=markers.find(x=>x.id===id);if(!m)return;if(b.dataset.action==='review'){goTo(m.time);if(m.end!=null)$('jumpTime').value=m.time.toFixed(1);}if(b.dataset.action==='edit')loadMarker(id);if(b.dataset.action==='delete'&&confirm('Supprimer cette balise ?')){markers=markers.filter(x=>x.id!==id);persist();render();if(Number($('editId').value)===id)formBlank();}});
+$('filterType').onchange=render;$('sortOrder').onchange=render;
+$('saveSummary').onclick=()=>{readMeta();persist();$('summaryStatus').textContent='Bilan enregistré localement.';};
+['student','soloTitle','mainIntent','strengths','priorities','testPlan'].forEach(id=>$(id).addEventListener('change',()=>{readMeta();persist();}));
+$('printReport').onclick=()=>{
+  readMeta();
+  const person=(meta.student||'Élève').trim();
+  const solo=(meta.soloTitle||'Solo de danse').trim();
+  const clean=s=>s.replace(/[\\\\/:*?"<>|]/g,' ').replace(/\\s+/g,' ').trim();
+  const reportTitle='Rapport d’analyse du solo — '+person+' — '+solo;
+  document.title=clean(reportTitle);
+  $('printReportTitle').textContent='Rapport d’analyse du solo de danse';
+  $('printReportSubtitle').textContent=(meta.student?'Élève : '+meta.student+' · ':'')+(meta.soloTitle?'Solo : '+meta.soloTitle:'');
+  $('printReportDate').textContent='Rapport généré le '+new Date().toLocaleDateString('fr-FR');
+  persist();
+  window.print();
+};
+$('clearAll').onclick=()=>{if(!confirm('Effacer toutes les balises, le bilan et les données enregistrées dans ce navigateur ? Cette action est irréversible.'))return;markers=[];nextId=1;meta={student:'',soloTitle:'',mainIntent:'',strengths:'',priorities:'',testPlan:''};localStorage.removeItem(STORAGE_KEY);fillMeta();render();formBlank();$('summaryStatus').textContent='Données locales effacées.';};
+restore();formBlank();
+})();
+</script>
+</body>
+</html>
